@@ -1,6 +1,8 @@
-module Publisher
+require 'event_bus'
 
+module Publisher
   def new_publisher_id
+    @publisher_id = EventBus.Publisher_ID_Generator
   end
 
   def notify
@@ -8,7 +10,9 @@ module Publisher
 end
 
 module Subscriber
+
   def new_subscriber_id
+    @subscriber_id = EventBus.Subscriber_ID_Generator
   end
 
   def subscribe
