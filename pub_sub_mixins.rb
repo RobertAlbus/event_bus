@@ -10,7 +10,7 @@ module Publisher
   end
 
   def make_subscribable
-    EventBus.subscriptions.push([@publisher_id])
+    EventBus.subscriptions.push({id: @publisher_id, subscribers: []})
   end
 
 end
@@ -22,10 +22,16 @@ module Subscriber
   end
 
   def subscribe(publisher_id)
-
-    EventBus.subscriptions[publisher_id - 1].push(@subscriber_id)
+    sub_to = EventBus.subscriptions.find { |subscriptions| subscriptions[:id] == publisher_id}
+    sub_to[:subscribers].push(@subscriber_id)
   end
 
-  def unsubscribe
+  def unsubscribe(publisher_id)
+    unsub_to = EventBus.subscriptions.find { |subscriptions| subscriptions[:id] == publisher_id}
+    unsub_to[:subscribers].delete(@subscriber_id)
+    puts "Unsubscribed"
   end
+
+
+
 end
