@@ -1,7 +1,8 @@
 class EventBus
 
+  @@subscriptions = []
   def self.subscriptions
-    @@subscriptions = []
+    @@subscriptions
   end
 
   def self.dispatch
@@ -12,10 +13,11 @@ class EventBus
   @@publisher_counter = 0
   @@subscriber_counter = 0
 
-
+  # helper
   def self.counters
     [@@publisher_counter, @@subscriber_counter]
   end
+  #
 
   def self.Publisher_ID_Generator
     @@publisher_counter += 1
