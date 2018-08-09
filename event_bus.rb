@@ -1,6 +1,7 @@
 class EventBus
 
   @@subscriptions = []
+
   def self.subscriptions
     @@subscriptions
   end
@@ -10,22 +11,15 @@ class EventBus
 
 
   ### ID GENERATOR ###
-  @@publisher_counter = 0
-  @@subscriber_counter = 0
 
-  # helper
-  def self.counters
-    [@@publisher_counter, @@subscriber_counter]
+  @@event_agent_id = 0
+  def self.event_agent_id
+    @@event_agent_id
   end
   #
 
-  def self.Publisher_ID_Generator
-    @@publisher_counter += 1
-    return @@publisher_counter
-  end
-
-  def self.Subscriber_ID_Generator
-    @@subscriber_counter += 1
-    return @@subscriber_counter
+  def self.event_agent_id_generator
+    @@event_agent_id += 1
+    return @@event_agent_id
   end
 end

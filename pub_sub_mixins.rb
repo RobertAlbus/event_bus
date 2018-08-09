@@ -2,7 +2,7 @@ require 'event_bus'
 
 module Publisher
   def new_publisher_id
-    @publisher_id = EventBus.Publisher_ID_Generator
+    @publisher_id = EventBus.event_agent_id_generator
     make_subscribable
   end
 
@@ -18,7 +18,7 @@ end
 module Subscriber
 
   def new_subscriber_id
-    @subscriber_id = EventBus.Subscriber_ID_Generator
+    @subscriber_id = EventBus.event_agent_id_generator
   end
 
   def subscribe(publisher_id)
