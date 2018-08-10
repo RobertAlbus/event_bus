@@ -6,9 +6,6 @@ module EventAgent
 
   attr_accessor :agent_id
 
-
-
-
   @@agent_id_counter = 0
   def self.agent_id_counter
     @@agent_id_counter
@@ -19,8 +16,6 @@ module EventAgent
   end
 end
 module Publisher
-
-
 
   def notify(payload)
     if payload.instance_of? Event

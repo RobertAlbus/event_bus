@@ -7,3 +7,6 @@ class A
     new_agent_id
   end
 end
+
+class S
+end
