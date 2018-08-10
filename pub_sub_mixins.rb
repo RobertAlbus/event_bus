@@ -17,12 +17,19 @@ module EventAgent
 
   module Publisher
 
-    def notify
+    def notify(payload)
+      if payload.instance_of? Event
+        EventBus.buffer.push( payload )
+        true
+      else
+        puts "Invalid payload. Please use an Event object"
+        false
+      end
     end
 
     def make_subscribable
       #add check for: already subscribable
-      EventBus.subscriptions.push({id: @agent_id, subscribers: []})
+      EventBus.subscriptions.push( {id: @agent_id, subscribers: []} )
     end
 
   end

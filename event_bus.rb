@@ -1,8 +1,11 @@
 class EventBus
 
   @@subscriptions = []
-  @@event_buffer = []
+  @@buffer = []
 
+  def self.buffer
+    @@buffer
+  end
 
   def self.subscriptions
     @@subscriptions
@@ -28,8 +31,8 @@ class Event
   ### ID GENERATOR
   @@event_id_counter = 0
   def self.event_id_generator
-    @@event_id += 1
-    @@event_id
+    @@event_id_counter  += 1
+    @@event_id_counter
   end
 
 
