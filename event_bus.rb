@@ -1,6 +1,8 @@
 class EventBus
 
   @@subscriptions = []
+  @@event_buffer = []
+
 
   def self.subscriptions
     @@subscriptions
