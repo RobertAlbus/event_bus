@@ -9,17 +9,7 @@ class EventBus
   def self.dispatch
   end
 
-  ### ID GENERATOR ###
-  @@event_agent_id = 0
-  def self.event_agent_id
-    @@event_agent_id
-  end
-  #
 
-  def self.event_agent_id_generator
-    @@event_agent_id += 1
-    @@event_agent_id
-  end
 end
 
 class Event
@@ -34,7 +24,7 @@ class Event
   end
 
   ### ID GENERATOR
-  @@event_id = 0
+  @@event_id_counter = 0
   def self.event_id_generator
     @@event_id += 1
     @@event_id
