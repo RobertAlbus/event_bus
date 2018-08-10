@@ -51,8 +51,8 @@ module EventAgent
     end
 
     def unsubscribe(publisher_id)
-      unsub_to = EventBus.subscriptions.find { |subscriptions| subscriptions[:id] == publisher_id}
-      unsub_to[:subscribers].delete(@agent_id)
+      publisher = EventBus.subscriptions.find { |subscriptions| subscriptions[:id] == publisher_id}
+      publisher[:subscribers].delete(@agent_id)
       puts "Unsubscribed"
     end
   end
