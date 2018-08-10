@@ -11,7 +11,7 @@ module EventAgent
     @@agent_id_counter
   end
 
-  def self.new_agent_id
+  def new_agent_id
     @agent_id = @@agent_id_counter += 1
   end
 end
