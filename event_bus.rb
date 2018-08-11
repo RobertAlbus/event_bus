@@ -1,5 +1,7 @@
 class EventBus
 
+
+  # class variables and accessors
   @@subscriptions = []
   @@buffer = []
 
@@ -11,10 +13,9 @@ class EventBus
     @@subscriptions
   end
 
-  def self.dispatch
+  while not @@buffer[0].empty?
+    # share payload with subscribers
   end
-
-
 end
 
 class Event
@@ -34,6 +35,5 @@ class Event
     @@event_id_counter  += 1
     @@event_id_counter
   end
-
 
 end

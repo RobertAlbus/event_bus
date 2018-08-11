@@ -15,6 +15,7 @@ module EventAgent
     @agent_id = @@agent_id_counter += 1
   end
 end
+
 module Publisher
 
   def notify(payload)
@@ -28,8 +29,16 @@ module Publisher
   end
 
   def make_subscribable
-    #add check for: already subscribable
-    EventBus.subscriptions.push( {id: @agent_id, subscribers: []} )
+
+    publisher_exists = EventBus.subscriptions.find { |subscription| subscription[:id] == @agent_id}
+
+    if publisher_exists
+      puts "You're already listed as a publisher"
+      false
+    else
+      EventBus.subscriptions.push( {id: @agent_id, subscribers: []} )
+      true
+    end
   end
 
 end
