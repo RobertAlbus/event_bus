@@ -13,9 +13,10 @@ class EventBus
     @@subscriptions
   end
 
-  # if @@buffer[0]
-  #   # share payload with subscribers
-  # end
+  while @@buffer[0]
+    #push to subscribers
+    #buffer[0].delete
+  end
 end
 
 class Event
