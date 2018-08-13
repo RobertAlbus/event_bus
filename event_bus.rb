@@ -23,9 +23,10 @@ class Event
 
   attr_accessor :payload
 
-  def initialize( message = 0 )
+  def initialize( message = 0, publisher_id = @agent_id)
     @payload = {
-      id: Event.event_id_generator,
+      publisher_id: publisher_id,
+      event_id: Event.event_id_generator,
       message: message
     }
   end
