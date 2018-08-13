@@ -1,12 +1,9 @@
 class A
   include EventAgent
-  include Publisher
-
-
   def initialize
-    new_agent_id
+    init_event_agent
   end
 end
 
-class S
+class E < Event
 end

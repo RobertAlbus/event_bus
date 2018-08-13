@@ -13,9 +13,9 @@ class EventBus
     @@subscriptions
   end
 
-  while not @@buffer[0].empty?
-    # share payload with subscribers
-  end
+  # if @@buffer[0]
+  #   # share payload with subscribers
+  # end
 end
 
 class Event
