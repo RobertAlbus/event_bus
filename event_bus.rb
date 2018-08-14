@@ -1,6 +1,5 @@
 class EventBus
 
-
   # class variables and accessors
   @@subscriptions = []
   @@buffer = []

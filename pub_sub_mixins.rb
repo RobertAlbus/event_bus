@@ -25,7 +25,6 @@ module EventAgent
     new_event_inbox
   end
 
-
   module Publisher
 
     def notify(payload)
@@ -47,7 +46,6 @@ module EventAgent
         true
       end
     end
-
   end
 
   module Subscriber
@@ -80,13 +78,10 @@ module EventAgent
       true
     end
 
-
     def message(msg)
       @event_log.push(msg)
     end
 
+    include Publisher
+    include Subscriber
   end
-
-  include Publisher
-  include Subscriber
-end
