@@ -12,6 +12,8 @@ class EventBus
     @@subscriptions
   end
 
+  #NEXT STOP MAKE DISPATCH WORK
+
   def self.dispatch
     if @@buffer.first.is_a? Event
       #recursively

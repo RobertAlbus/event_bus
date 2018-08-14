@@ -1,27 +1,14 @@
-
-
 module EventAgent
 
   ### ID GENERATOR ###
 
-  attr_accessor :agent_id
   attr_accessor :event_inbox
-
-  @@agent_id_counter = 0
-  def self.agent_id_counter
-    @@agent_id_counter
-  end
-
-  def new_agent_id
-    @agent_id = @@agent_id_counter += 1
-  end
 
   def new_event_inbox
     @event_inbox = []
   end
 
   def init_event_agent
-    new_agent_id
     new_event_inbox
   end
 
@@ -29,20 +16,20 @@ module EventAgent
 
     def notify(payload)
       EventBus.buffer.push(
-        Event.new(message = payload, publisher_id = @agent_id)
+        Event.new(message = payload, publisher_id = self)
       )
       true
     end
 
     def make_subscribable
 
-      publisher_exists = EventBus.subscriptions.find { |subscription| subscription[:id] == @agent_id}
+      publisher_exists = EventBus.subscriptions.find { |subscription| subscription[:publisher] == self}
 
       if publisher_exists
         puts "You're already listed as a publisher"
         false
       else
-        EventBus.subscriptions.push( {id: @agent_id, subscribers: []} )
+        EventBus.subscriptions.push( {publisher: self, subscribers: []} )
         true
       end
     end
@@ -50,38 +37,40 @@ module EventAgent
 
   module Subscriber
 
-    def subscribe(publisher_id)
-      publisher = EventBus.subscriptions.find { |subscription| subscription[:id] == publisher_id}
+    def subscribe(publisher)
+      publisher = EventBus.subscriptions.find { |subscription| subscription[:publisher] == publisher}
 
       if !publisher
-        puts "Event Agent ##{publisher_id} is not subscribable."
+        puts "Not subscribable."
         false
 
-      elsif publisher_id == @agent_id
+      elsif publisher == self
         puts "Cannot subscribe to yourself"
         false
 
-      elsif !publisher[:subscribers].include?(@agent_id)
-        publisher[:subscribers].push(self)
-        puts "Event Agent ##{@agent_id} is now subcribed to Event Agent ##{publisher_id}"
-        true
+      elsif publisher[:subscribers].include?(self)
+        puts "Already subcribed to this publisher"
 
-      elsif publisher[:subscribers].include?(@agent_id)
-        puts "Event Agent ##{@agent_id} is already subcribed to Event Agent ##{publisher_id}"
+      elsif publisher != self
+        publisher[:subscribers].push(self)
+        puts "Now subcribed to Event Agent ##{publisher}"
+        true
       end
     end
 
     def unsubscribe(publisher_id)
       publisher = EventBus.subscriptions.find { |subscriptions| subscriptions[:id] == publisher_id}
-      publisher[:subscribers].delete(@agent_id)
+      publisher[:subscribers].delete(self)
       puts "Unsubscribed"
       true
     end
 
+    ### BROKEN TO HERE
     def message(msg)
       @event_log.push(msg)
     end
 
-    include Publisher
-    include Subscriber
   end
+  include Publisher
+  include Subscriber
+end
