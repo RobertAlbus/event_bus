@@ -13,9 +13,17 @@ class EventBus
     @@subscriptions
   end
 
-  while @@buffer[0]
-    #push to subscribers
-    #buffer[0].delete
+  def self.dispatch
+    if @@buffer.first.is_a? Event
+      #recursively
+      EventAgent.event_inbox.push(@@buffer.first)
+    end
+    @@buffer.delete_at(0)
+
+  end
+
+  while @@buffer.first
+    @@buffer.dispatch
   end
 end
 

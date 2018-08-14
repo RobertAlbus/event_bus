@@ -29,18 +29,10 @@ module EventAgent
   module Publisher
 
     def notify(payload)
-
-
-
       EventBus.buffer.push(
         Event.new(message = payload, publisher_id = @agent_id)
       )
       true
-      # if payload.instance_of? Event
-      # else
-      #   puts "Invalid payload. Please use an Event object"
-      #   false
-      # end
     end
 
     def make_subscribable
@@ -72,7 +64,7 @@ module EventAgent
         false
 
       elsif !publisher[:subscribers].include?(@agent_id)
-        publisher[:subscribers].push(@agent_id)
+        publisher[:subscribers].push(self)
         puts "Event Agent ##{@agent_id} is now subcribed to Event Agent ##{publisher_id}"
         true
 
