@@ -32,17 +32,17 @@ class Event
 
   attr_accessor :payload
 
-  def initialize( message = 0, publisher_id = @agent_id)
+  def initialize( message = 0, publisher_id = self)
     @payload = {
       publisher_id: publisher_id,
-      event_id: Event.event_id_generator,
+      event_id: Event.id_generator,
       message: message
     }
   end
 
   ### ID GENERATOR
   @@event_id_counter = 0
-  def self.event_id_generator
+  def self.id_generator
     @@event_id_counter  += 1
     @@event_id_counter
   end

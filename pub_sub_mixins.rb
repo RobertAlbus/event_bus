@@ -2,7 +2,9 @@ module EventAgent
 
   ### ID GENERATOR ###
 
-  attr_accessor :event_inbox
+  def event_inbox
+    @event_inbox
+  end
 
   def new_event_inbox
     @event_inbox = []
