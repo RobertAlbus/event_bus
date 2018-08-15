@@ -17,7 +17,7 @@ module EventAgent
   module Publisher
 
     def notify(payload)
-      EventBus.buffer.push(
+      EventBus.event_inbox.push(
         Event.new(message = payload, publisher_id = self)
       )
       true
