@@ -79,6 +79,8 @@ class EventBus
       end
     }
   end
+
+  self.start_dispatcher
 end
 
 class Event
