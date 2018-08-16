@@ -17,7 +17,13 @@ class EventBus
   end
 
   def self.buffer_update
-    @@buffer = EventBus.event_inbox[0]
+    if EventBus.event_inbox[0]
+      @@buffer = EventBus.event_inbox.shift
+    end
+  end
+
+  def self.buffer_flush
+    @@buffer = {}
   end
 
   ########
@@ -26,21 +32,18 @@ class EventBus
   ########
 
   def self.dispatch
-    EventBus.buffer_update
+    self.buffer_update
     if @@buffer
       ### HOW DO I HANDLE THE ERROR
       ### NO SUBSCRIBERS FOR EVENT && DISPATCH CALLED
       ### RETURNS A BLANK ARRAY, WOULD RATHER IT RETURN
-      ### >"No subscribers for this event"
       ### > nil
 
-      #if there's an unprocessed event
-      #load first event into buffer
-      @@buffer = EventBus.event_inbox.shift
       #get pushlisher of this payload
       this_publisher = @@buffer.payload[:publisher]
       #get matching subscription list
       this_subscription = EventBus.subscriptions.find{|subscription| subscription[:publisher] == this_publisher}
+
       if this_subscription[:subscribers]
         this_subscription[:subscribers].each do |s|
 
@@ -49,22 +52,40 @@ class EventBus
           # The whole event or just the payload?
           ###
 
-          s.event_inbox.push(@@buffer[:payload])
+          s.event_inbox.push(@@buffer.payload)
         end
       else
+        # Why doesnt this happen?
         puts "No Subscribers"
         nil
       end
-    else
-      puts "Nothing to dispatch"
-      nil
+
+      self.buffer_flush
+      return
+      # else
+      #   puts "Nothing to dispatch"
+      #   nil
     end
+  end
+
+  def self.start_dispatcher
+    Thread.new {
+      loop do
+        if @@event_inbox[0]
+
+          self.dispatch
+          sleep(10)
+        end
+      end
+    }
   end
 end
 
 class Event
 
   attr_accessor :payload
+
+
 
   def initialize( message = 0, publisher_id = self)
     @payload = {
