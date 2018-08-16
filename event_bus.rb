@@ -16,6 +16,10 @@ class EventBus
     @@buffer
   end
 
+  def self.dispatch_thread
+    @@dispatch_thread.status
+  end
+
   def self.buffer_update
     if EventBus.event_inbox[0]
       @@buffer = EventBus.event_inbox.shift
@@ -69,15 +73,20 @@ class EventBus
   end
 
   def self.start_dispatcher
-    Thread.new {
+    @@dispatch_thread = Thread.new {
       loop do
         if @@event_inbox[0]
-
           self.dispatch
           sleep(10)
         end
       end
     }
+  end
+
+  def self.stop_dispatcher
+    @@dispatch_thread.exit
+    sleep(0.1) # need to wait to return correct value.
+    self.dispatch_thread
   end
 
   self.start_dispatcher
