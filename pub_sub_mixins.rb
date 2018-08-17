@@ -13,7 +13,7 @@ module EventAgent
   module Publisher
 
     def notify(payload)
-      EventBus.event_inbox.push(
+      EventBus.receive(
         Event.new(message = payload, publisher_id = self)
       )
       true
@@ -25,7 +25,7 @@ module EventAgent
 
       if publisher_exists
         puts "You're already listed as a publisher"
-        false
+        nil
       else
         EventBus.subscriptions.push( {publisher: self, subscribers: []} )
         true
@@ -58,10 +58,6 @@ module EventAgent
       publisher[:subscribers].delete(self)
       puts "Unsubscribed"
       true
-    end
-
-    def self.message(msg)
-      @event_inbox.push(msg)
     end
 
   end

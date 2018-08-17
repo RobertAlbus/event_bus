@@ -35,6 +35,14 @@ class EventBus
   end
 
   ########
+  # receive
+  ####
+
+  def self.receive(msg)
+    EventBus.event_inbox.push(msg)
+  end
+
+  ########
   # dispatch
   ####
 
@@ -80,9 +88,9 @@ class EventBus
     self.dispatch_thread
   end
 
-
-
-
+  ########
+  # end EventAgent
+  ####
 end
 
 class Event
@@ -92,12 +100,15 @@ class Event
   def initialize( message = 0, publisher_id = self)
     @payload = {
       publisher: publisher_id,
-      event_id: self.id_generator,
+      event_id: Event.id_generator,
       message: message
     }
   end
 
-  ### ID GENERATOR
+  ########
+  # id generator
+  ####
+
   @@event_id_counter = 0
   def self.id_generator
     @@event_id_counter  += 1
