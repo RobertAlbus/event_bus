@@ -1,9 +1,13 @@
 class EventBus
 
+  ########
   # class variables and accessors
+  ####
+
   @@subscriptions = []
   @@event_inbox = []
   @@buffer = {}
+
   def self.event_inbox
     @@event_inbox
   end
@@ -16,13 +20,13 @@ class EventBus
     @@buffer
   end
 
-  def self.dispatch_thread
-    @@dispatch_thread.status
-  end
+  ########
+  # buffer
+  ####
 
   def self.buffer_update
-    if EventBus.event_inbox[0]
-      @@buffer = EventBus.event_inbox.shift
+    if self.event_inbox[0]
+      @@buffer = self.event_inbox.shift
     end
   end
 
@@ -31,44 +35,31 @@ class EventBus
   end
 
   ########
-  #   How do I get Ruby to continuously run EventBus.dispatch?
-  #   call it in the notify method ???
-  ########
+  # dispatch
+  ####
+
+  def self.dispatch_thread
+    @@dispatch_thread.status
+  end
 
   def self.dispatch
     self.buffer_update
     if @@buffer
-      ### HOW DO I HANDLE THE ERROR
-      ### NO SUBSCRIBERS FOR EVENT && DISPATCH CALLED
-      ### RETURNS A BLANK ARRAY, WOULD RATHER IT RETURN
-      ### > nil
 
       #get pushlisher of this payload
       this_publisher = @@buffer.payload[:publisher]
+
       #get matching subscription list
-      this_subscription = EventBus.subscriptions.find{|subscription| subscription[:publisher] == this_publisher}
+      this_subscription = self.subscriptions.find{|subscription| subscription[:publisher] == this_publisher}
 
       if this_subscription[:subscribers]
-        this_subscription[:subscribers].each do |s|
-
-          ###
-          # What exactly do I want to put in the subscribers inbox?
-          # The whole event or just the payload?
-          ###
-
-          s.event_inbox.push(@@buffer.payload)
+        this_subscription[:subscribers].each do |subscriber|
+          subscriber.event_inbox.push(@@buffer.payload)
         end
-      else
-        # Why doesnt this happen?
-        puts "No Subscribers"
-        nil
       end
 
       self.buffer_flush
       return
-      # else
-      #   puts "Nothing to dispatch"
-      #   nil
     end
   end
 
@@ -89,19 +80,19 @@ class EventBus
     self.dispatch_thread
   end
 
-  self.start_dispatcher
+
+
+
 end
 
 class Event
 
   attr_accessor :payload
 
-
-
   def initialize( message = 0, publisher_id = self)
     @payload = {
       publisher: publisher_id,
-      event_id: Event.id_generator,
+      event_id: self.id_generator,
       message: message
     }
   end

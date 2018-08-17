@@ -1,10 +1,6 @@
 module EventAgent
 
-  ### ID GENERATOR ###
-
-  def event_inbox
-    @event_inbox
-  end
+  attr_accessor :event_inbox
 
   def new_event_inbox
     @event_inbox = []
@@ -45,14 +41,11 @@ module EventAgent
       if !publisher
         puts "Not subscribable."
         false
-
       elsif publisher == self
         puts "Cannot subscribe to yourself"
         false
-
       elsif publisher[:subscribers].include?(self)
         puts "Already subcribed to this publisher"
-
       elsif publisher != self
         publisher[:subscribers].push(self)
         puts "Now subcribed to Event Agent ##{publisher}"
@@ -60,16 +53,15 @@ module EventAgent
       end
     end
 
-    def unsubscribe(publisher_id)
-      publisher = EventBus.subscriptions.find { |subscriptions| subscriptions[:id] == publisher_id}
+    def unsubscribe(publisher)
+      publisher = EventBus.subscriptions.find { |subscriptions| subscriptions[:id] == publisher}
       publisher[:subscribers].delete(self)
       puts "Unsubscribed"
       true
     end
 
-    ### BROKEN TO HERE
-    def message(msg)
-      @event_log.push(msg)
+    def self.message(msg)
+      @event_inbox.push(msg)
     end
 
   end
