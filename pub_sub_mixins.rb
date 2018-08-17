@@ -14,15 +14,13 @@ module EventAgent
 
     def notify(payload)
       EventBus.receive(
-        Event.new(message = payload, publisher_id = self)
+        Event.new(message = payload, publisher = self)
       )
       true
     end
 
     def make_subscribable
-
-      publisher_exists = EventBus.subscriptions.find { |subscription| subscription[:publisher] == self}
-
+      publisher_exists = EventBus.subscriptions.find{ |subscription| subscription[:publisher] == self}
       if publisher_exists
         puts "You're already listed as a publisher"
         nil
@@ -39,7 +37,7 @@ module EventAgent
       publisher = EventBus.subscriptions.find { |subscription| subscription[:publisher] == publisher}
 
       if !publisher
-        puts "Not subscribable."
+        puts "Not listed for subscription."
         false
       elsif publisher == self
         puts "Cannot subscribe to yourself"
@@ -59,8 +57,8 @@ module EventAgent
       puts "Unsubscribed"
       true
     end
-
   end
+
   include Publisher
   include Subscriber
 end

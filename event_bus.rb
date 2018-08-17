@@ -1,28 +1,35 @@
 class EventBus
 
   ########
-  # class variables and accessors
+  # subscriptions
   ####
 
   @@subscriptions = []
-  @@event_inbox = []
-  @@buffer = {}
-
-  def self.event_inbox
-    @@event_inbox
-  end
-
   def self.subscriptions
     @@subscriptions
   end
 
-  def self.buffer
-    @@buffer
+  ########
+  # receive
+  ####
+
+  @@event_inbox = []
+  def self.event_inbox
+    @@event_inbox
+  end
+
+  def self.receive(msg)
+    EventBus.event_inbox.push(msg)
   end
 
   ########
   # buffer
   ####
+
+  @@buffer = {}
+  def self.buffer
+    @@buffer
+  end
 
   def self.buffer_update
     if self.event_inbox[0]
@@ -32,14 +39,6 @@ class EventBus
 
   def self.buffer_flush
     @@buffer = {}
-  end
-
-  ########
-  # receive
-  ####
-
-  def self.receive(msg)
-    EventBus.event_inbox.push(msg)
   end
 
   ########
@@ -97,9 +96,9 @@ class Event
 
   attr_accessor :payload
 
-  def initialize( message = 0, publisher_id = self)
+  def initialize( message = 0, publisher = self)
     @payload = {
-      publisher: publisher_id,
+      publisher: publisher,
       event_id: Event.id_generator,
       message: message
     }
