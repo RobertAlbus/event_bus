@@ -1,5 +1,5 @@
-# EventBus
-### this is a project to experiment with the publisher-subscriber pattern. The key difference between publisher-subscriber and the observer pattern is that in pub-sub the publishers are not concerned with who is subscribed to their messages. This concern is placed upon a handler in between the publisher and subscriber.
+# event_bus
+This is a project to experiment with the publisher-subscriber pattern. The key difference between publisher-subscriber and the observer pattern is that in pub-sub the publishers are not concerned with who is subscribed to their messages. This concern is placed upon a handler in between the publisher and subscriber.
 
 ## Publisher
 An object who is concerned with alerting others about some sort of event. 
